@@ -13,6 +13,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExpenseComponent } from './components/expense/expense.component';
 import { IncomeComponent } from './components/income/income.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+
 import en from '@angular/common/locales/en';
 
 registerLocaleData(en);
@@ -32,6 +34,7 @@ registerLocaleData(en);
     BrowserAnimationsModule,
     DemoNgZorroAntdModule,
     ReactiveFormsModule,
+    CanvasJSAngularChartsModule
   ],
   providers: [
     { provide: NZ_I18N, useValue: en_US },

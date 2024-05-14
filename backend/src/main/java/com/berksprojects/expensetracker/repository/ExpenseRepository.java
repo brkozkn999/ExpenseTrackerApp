@@ -13,9 +13,7 @@ import java.util.Optional;
 @Repository
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     List<Expense> findByDateBetween(LocalDate startDate, LocalDate endDate);
-
     @Query("SELECT SUM(e.amount) FROM Expense e")
     Double sumAllAmounts();
-
     Optional<Expense> findFirstByOrderByDateDesc();
 }

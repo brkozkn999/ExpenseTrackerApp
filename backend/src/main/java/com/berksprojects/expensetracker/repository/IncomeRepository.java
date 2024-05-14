@@ -19,4 +19,6 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     Double sumAllAmounts();
 
     Optional<Income> findFirstByOrderByDateDesc();
+
+    List<Income> findByDateBetweenOrderByDateAsc(LocalDate startDate, LocalDate endDate);
 }

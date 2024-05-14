@@ -25,10 +25,10 @@ public class StatServiceImpl implements StatsService {
 
         GraphDto graphDto = new GraphDto();
         graphDto.setExpenseList(expenseRepository.findByDateBetween(startDate, endDate));
-        graphDto.setIncomeList(incomeRepository.findByDateBetween(startDate, endDate));
-
+        graphDto.setIncomeList(incomeRepository.findByDateBetweenOrderByDateAsc(startDate, endDate)); // Tarihe göre sıralanmış şekilde al
         return graphDto;
     }
+
 
     public StatsDto getStats() {
         Double totalIncome = incomeRepository.sumAllAmounts();
@@ -46,8 +46,19 @@ public class StatServiceImpl implements StatsService {
         statsDto.setExpense(totalExpense);
         statsDto.setIncome(totalIncome);
 
-        optionalIncome.ifPresent(statsDto::setLatestIncome);
-        optionalExpense.ifPresent(statsDto::setLatestExpense);
+        optionalIncome.ifPresentOrElse(statsDto::setLatestIncome, () -> {
+                    Income nullIncome = new Income();
+                    nullIncome.setAmount(0);
+                    statsDto.setLatestIncome(nullIncome);
+                }
+        );
+
+        optionalExpense.ifPresentOrElse(statsDto::setLatestExpense, () -> {
+                    Expense nullExpense = new Expense();
+                    nullExpense.setAmount(0);
+                    statsDto.setLatestExpense(nullExpense);
+                }
+        );
 
         statsDto.setBalance(totalIncome-totalExpense);
         List<Income> incomeList = incomeRepository.findAll();
@@ -59,11 +70,11 @@ public class StatServiceImpl implements StatsService {
         OptionalDouble minExpense = expenseList.stream().mapToDouble(Expense::getAmount).min();
         OptionalDouble maxExpense = expenseList.stream().mapToDouble(Expense::getAmount).max();
 
-        statsDto.setMinExpense(minExpense.isPresent() ? minExpense.getAsDouble() : null);
-        statsDto.setMaxExpense(maxExpense.isPresent() ? maxExpense.getAsDouble() : null);
+        statsDto.setMinExpense(minExpense.isPresent() ? minExpense.getAsDouble() : 0);
+        statsDto.setMaxExpense(maxExpense.isPresent() ? maxExpense.getAsDouble() : 0);
 
-        statsDto.setMinIncome(minIncome.isPresent() ? minIncome.getAsDouble() : null);
-        statsDto.setMaxIncome(maxIncome.isPresent() ? maxIncome.getAsDouble() : null);
+        statsDto.setMinIncome(minIncome.isPresent() ? minIncome.getAsDouble() : 0);
+        statsDto.setMaxIncome(maxIncome.isPresent() ? maxIncome.getAsDouble() : 0);
 
         return statsDto;
     }

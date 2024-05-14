@@ -18,4 +18,8 @@ export class IncomeService {
   getAllIncomes(): Observable<any> {
     return this.http.get(BASIC_URL + "api/income/all");
   }
+
+  deleteIncome(incomeId:number): Observable<any> {
+    return this.http.delete(BASIC_URL + "api/income/" + incomeId);
+  }
 }

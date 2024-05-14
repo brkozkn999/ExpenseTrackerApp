@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IncomeService } from '../../../services/income/income.service';
-import { StatsService } from '../../../services/stats/stats.service';
+import { IncomeService } from '../../services/income/income.service';
+import { StatsService } from '../../services/stats/stats.service';
 import { NzMessageService } from 'ng-zorro-antd/message';
-import { Observable } from 'rxjs';
+
 @Component({
   selector: 'app-income',
   templateUrl: './income.component.html',
-  styleUrl: './income.component.scss'
+  styleUrls: ['./income.component.scss']
 })
+
 export class IncomeComponent {
   incomeForm!: FormGroup;
   incomes:any;
@@ -26,8 +27,9 @@ export class IncomeComponent {
   constructor(private fb: FormBuilder,
     private incomeService: IncomeService,
     private statsService: StatsService,
-    private message: NzMessageService
-  ) {}
+    private message: NzMessageService) {
+
+    }
 
   ngOnInit() {
     this.getAllIncomes();
@@ -44,6 +46,9 @@ export class IncomeComponent {
   submitForm() {
     this.incomeService.postIncome(this.incomeForm.value).subscribe((res) =>{
       this.message.success("Income posted successfully!", {nzDuration: 5000});
+      this.getAllIncomes();
+      this.getTotalIncome();
+      this.incomeForm.reset();
     }, error => {
       this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
     })
@@ -52,13 +57,27 @@ export class IncomeComponent {
   getAllIncomes() {
     this.incomeService.getAllIncomes().subscribe((res) => {
       this.incomes = res;
-      console.log(this.incomes);
+    }, erorr =>{
+      this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
     })
   }
 
   getTotalIncome() {
     this.statsService.getStats().subscribe((res) => {
       this.totalIncome = res.income;
+    }, error => {
+      this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
+    })
+  }
+
+  deleteIncome(incomeId:number) {
+    this.incomeService.deleteIncome(incomeId).subscribe((res) => {
+      console.log(res);
+      this.getAllIncomes();
+      this.getTotalIncome();
+      this.message.success("Income deleted successfully!", {nzDuration: 5000});
+    }, erorr =>{
+      this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
     })
   }
 }

@@ -2,7 +2,7 @@
     <div nz-row>
         <div nz-col nzFlex="1">
             <nz-card nzType="inner" style="margin-top: 16px;">
-                <h2>Total Income: <span [style.color]="'#85BB65'"> ${{ this.totalIncome | number: '1.0-3' }}</span></h2>
+                <h2>Total Income: <span [style.color]="'#85BB65'" style="font-weight: bold;"> ${{ this.totalIncome | number: '1.0-3' }}</span></h2>
             </nz-card>
         </div>
     </div>
@@ -53,7 +53,7 @@
                         <div nz-col nzSpan="18">
                             <span nz-icon nzType="message" nzTheme="outline"></span> {{income.title}}
                             -
-                            <span nz-icon nzType="dollar" nzTheme="outline"></span> {{income.amount}}
+                            <span nz-icon nzType="dollar" nzTheme="outline"></span> {{income.amount | number: '1.0-3' }}
                             -
                             <span nz-icon nzType="clock-circle" nzTheme="outline"></span> {{income.date}}
                             -
@@ -61,7 +61,10 @@
                         </div>
                         <div nz-col nzSpan="6" style="font-size: 15px;">
                             <span nz-icon nzType="edit" nzTheme="fill" style="color: blue;"></span>
-                            <span nz-icon nzType="delete" nzTheme="fill" style="color: red; margin-left: 10px;"></span>
+                            
+                            <span nz-popconfirm nzPopconfirmTitle="Are you sure delete this income?" nzPopconfirmPlacement="top" (nzOnConfirm)="this.deleteIncome(income.id)">
+                                <span nz-icon nzType="delete" nzTheme="fill" style="color: red; margin-left: 10px;"></span>
+                            </span>
                         </div>
                     </div>
                 </div>

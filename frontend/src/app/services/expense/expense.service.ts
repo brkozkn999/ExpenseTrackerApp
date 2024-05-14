@@ -18,4 +18,8 @@ export class ExpenseService {
   getAllExpenses(): Observable<any> {
     return this.http.get(BASIC_URL + "api/expense/all");
   }
+
+  deleteExpense(expenseId:number): Observable<any> {
+    return this.http.delete(BASIC_URL + "api/expense/" + expenseId);
+  }
 }

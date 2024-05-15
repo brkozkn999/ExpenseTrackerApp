@@ -9,7 +9,7 @@
     <div nz-row>
         <div nz-col nzFlex="2">
             <nz-card nzType="inner" style="margin-top: 16px;" nzTitle="Post new Expense">
-                <form nz-form [formGroup]="expenseForm" (ngSubmit)="submitForm()" class="custom-form">
+                <form nz-form [formGroup]="expenseForm" (ngSubmit)="submitPostForm()" class="custom-form">
                     <nz-form-item>
                         <nz-form-control nzErrorTip="Please input the title!">
                             <input type="text" nz-input formControlName="title" placeholder="Enter title">
@@ -60,7 +60,46 @@
                             <span nz-icon nzType="comment" nzTheme="outline"></span> {{expense.category}}
                         </div>
                         <div nz-col nzSpan="6" style="font-size: 15px;">
-                            <span nz-icon nzType="edit" nzTheme="fill" style="color: blue;"></span>
+                            
+                            <span nz-icon nzType="edit" nzTheme="fill" style="color: blue;" (click)="showModal(expense.id)"></span>
+
+                            <nz-modal [(nzVisible)]="isVisible" nzTitle="Update Expense" (nzOnCancel)="handleCancel()" (nzOnOk)="submitPutForm(expense.id)">
+                              <ng-container *nzModalContent>
+
+                                <form nz-form [formGroup]="expenseUpdateForm" class="custom-form">
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="Please input the title!">
+                                            <input type="text" nz-input formControlName="title" placeholder="Enter title">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="Please input the amount!">
+                                            <input type="number" nz-input formControlName="amount" placeholder="Enter amount">
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <nz-form-item>
+                                        <nz-form-control nzErrorTip="Please input the date!">
+                                            <nz-date-picker style="width: 100%;" formControlName="date"></nz-date-picker>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <nz-form-item>
+                                        <nz-form-control>
+                                            <textarea nz-input placeholder="Enter description" [nzAutosize]="{ minRows: 2, maxRows: 6}"
+                                            formControlName="description"></textarea>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                    <nz-form-item nzErrorTip="Please input the category!">
+                                        <nz-form-control>
+                                            <nz-select nzAllowClear nzPlaceHolder="Select the category" formControlName="category">
+                                                <nz-option *ngFor="let category of listOfCategory" [nzLabel]="category"
+                                                [nzValue]="category"></nz-option>
+                                            </nz-select>
+                                        </nz-form-control>
+                                    </nz-form-item>
+                                </form>
+                                
+                            </ng-container>
+                            </nz-modal>
                             
                             <span nz-popconfirm nzPopconfirmTitle="Are you sure delete this expense?" nzPopconfirmPlacement="top" (nzOnConfirm)="this.deleteExpense(expense.id)">
                                 <span nz-icon nzType="delete" nzTheme="fill" style="color: red; margin-left: 10px;"></span>

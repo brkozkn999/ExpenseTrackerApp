@@ -31,7 +31,7 @@ public class ExpenseController {
         return ResponseEntity.ok(expenseService.getAllExpenses());
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<?> getExpenseById(@PathVariable Long id) {
         try {
             return ResponseEntity.ok(expenseService.getExpenseById(id));

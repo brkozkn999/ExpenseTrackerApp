@@ -25,7 +25,7 @@
         <div nz-col nzFlex="1" style="margin-left: 20px;">
             <nz-card nzType="inner" style="margin-top: 16px;" nzTitle="Recent History">
                 <div nz-card-grid style="width: 100%;">
-                    <div nz-row>
+                    <div nz-row style="display: flex; justify-content: center;">
                         <div nz-col nzSpan="18">
                             <h3 [style.color]="'#85BB65'">${{ this.info.latestIncome.amount | number: '1.0-3' }} 
                                 <span style="margin-left: 8px;">- {{ this.info.latestIncome.category }}</span>
@@ -35,7 +35,7 @@
                 </div>
                         
                 <div nz-card-grid style="width: 100%;">
-                    <div nz-row>
+                    <div nz-row style="display: flex; justify-content: center;">
                         <div nz-col nzSpan="18">
                             <h3 [style.color]="'#E0080B'">${{ this.info.latestExpense.amount | number: '1.0-3' }}
                                 <span style="margin-left: 8px;">- {{ this.info.latestExpense.category }}</span>
@@ -50,7 +50,7 @@
                     <div nz-row style="display: flex; justify-content: center;">
                         <div nz-col nzSpan="18">
                             <span style="margin-right: 8px;">Min: <strong>${{ this.info.minIncome | number: '1.0-3'}}</strong></span> 
-                            <span>|</span>
+                            <br>
                             <span style="margin-left: 8px;">Max: <strong>${{ this.info.maxIncome | number: '1.0-3' }}</strong></span> 
                         </div>
                     </div>
@@ -62,7 +62,7 @@
                     <div nz-row style="display: flex; justify-content: center;">
                         <div nz-col nzSpan="18">
                             <span style="margin-right: 8px;">Min: <strong>${{ this.info.minExpense | number: '1.0-3' }}</strong></span> 
-                            <span>|</span>
+                            <br>
                             <span style="margin-left: 8px;">Max: <strong>${{ this.info.maxExpense | number: '1.0-3' }}</strong></span> 
                         </div>
                     </div>

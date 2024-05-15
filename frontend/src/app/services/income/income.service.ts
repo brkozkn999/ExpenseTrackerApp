@@ -11,12 +11,20 @@ export class IncomeService {
 
   constructor(private http: HttpClient) { }
 
-  postIncome(incomeDto:any): Observable<any> {
-    return this.http.post(BASIC_URL + "api/income", incomeDto);
+  getIncomeById(id:number): Observable<any> {
+    return this.http.get(BASIC_URL + "api/income/" + id);
   }
 
   getAllIncomes(): Observable<any> {
     return this.http.get(BASIC_URL + "api/income/all");
+  }
+
+  postIncome(incomeDto:any): Observable<any> {
+    return this.http.post(BASIC_URL + "api/income", incomeDto);
+  }
+
+  updateIncome(id:number, incomeDto:any): Observable<any> {
+    return this.http.put(BASIC_URL + "api/income/" + id, incomeDto);
   }
 
   deleteIncome(incomeId:number): Observable<any> {

@@ -11,8 +11,16 @@ export class ExpenseService {
 
   constructor(private http: HttpClient) { }
 
+  getExpenseById(id:number): Observable<any> {
+    return this.http.get(BASIC_URL + "api/expense/" + id);
+  }
+
   postExpense(expenseDto:any): Observable<any> {
     return this.http.post(BASIC_URL + "api/expense", expenseDto);
+  }
+
+  updateExpense(id:number, expenseDto:any): Observable<any> {
+    return this.http.put(BASIC_URL + "api/expense/" + id, expenseDto);
   }
 
   getAllExpenses(): Observable<any> {

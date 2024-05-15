@@ -12,8 +12,11 @@ import { NzMessageService } from 'ng-zorro-antd/message';
 
 export class IncomeComponent {
   incomeForm!: FormGroup;
+  incomeUpdateForm!: FormGroup;
   incomes:any;
   totalIncome:any;
+  isVisible = false;
+
   listOfCategory: any = [
     "Education",
     "Groceries",
@@ -23,6 +26,19 @@ export class IncomeComponent {
     "Clothing",
     "Travelling",
     "Other"];
+
+    showModal(id:number): void {
+      this.getExpenseById(id);
+      this.isVisible = true;
+    }
+  
+    handleOk(): void {
+      this.isVisible = false;
+    }
+  
+    handleCancel(): void {
+      this.isVisible = false;
+    }
 
   constructor(private fb: FormBuilder,
     private incomeService: IncomeService,
@@ -41,16 +57,20 @@ export class IncomeComponent {
       category: [null, Validators.required],
       description: [null, Validators.required]
     })
+
+    this.incomeUpdateForm = this.fb.group({
+      title: [null, Validators.required],
+      amount: [null, Validators.required],
+      date: [null, Validators.required],
+      category: [null, Validators.required],
+      description: [null, Validators.required]
+    })
   }
 
-  submitForm() {
-    this.incomeService.postIncome(this.incomeForm.value).subscribe((res) =>{
-      this.message.success("Income posted successfully!", {nzDuration: 5000});
-      this.getAllIncomes();
-      this.getTotalIncome();
-      this.incomeForm.reset();
-    }, error => {
-      this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
+  getExpenseById(id:number) {
+    this.incomeService.getIncomeById(id).subscribe((res) => {
+      this.incomeUpdateForm.patchValue(res);
+      console.log(res);
     })
   }
 
@@ -65,6 +85,28 @@ export class IncomeComponent {
   getTotalIncome() {
     this.statsService.getStats().subscribe((res) => {
       this.totalIncome = res.income;
+    }, error => {
+      this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
+    })
+  }
+
+  submitPostForm() {
+    this.incomeService.postIncome(this.incomeForm.value).subscribe((res) =>{
+      this.message.success("Income posted successfully!", {nzDuration: 5000});
+      this.getAllIncomes();
+      this.getTotalIncome();
+      this.incomeForm.reset();
+    }, error => {
+      this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
+    })
+  }
+
+  submitPutForm(id:number) {
+    this.incomeService.updateIncome(id, this.incomeUpdateForm.value).subscribe((res) =>{
+      this.message.success("Income updated successfully!", {nzDuration: 5000});
+      this.getAllIncomes();
+      this.getTotalIncome();
+      this.incomeUpdateForm.reset();
     }, error => {
       this.message.error("Someting was wrong. Try again.", {nzDuration: 5000})
     })
